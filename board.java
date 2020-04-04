@@ -1,10 +1,10 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import java.awt.Graphics2D;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -14,11 +14,10 @@ public class DrawGrid {
 
     public DrawGrid() {
         frame = new JFrame("DrawGrid");
-        frame.setSize(600, 400);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(frame.getSize());
         frame.add(new MultiDraw(frame.getSize()));
-        frame.pack();
+        frame.setSize(800, 600);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);frame.pack();
         frame.setVisible(true);
     }
 
@@ -27,12 +26,11 @@ public class DrawGrid {
     }
 
     public static class MultiDraw extends JPanel  implements ActionListener {
-        int startX = 10;
-        int startY = 10;
-        int cellWidth = 40;
-        int turn = 2;
+        int turn = 2; /* If it's going to be an even number, it will read it as one player's turn, if it is odd, it is the other player's turn*/
         int rows = 6;
-        int cols = 7;
+        int cols = 7; int startX = 10; int startY = 10;
+        int cellWidth = 40;
+       
 
         Color[][] grid = new Color[rows][cols];
 
@@ -40,7 +38,6 @@ public class DrawGrid {
             setSize(dimension);
             setPreferredSize(dimension);
             addActionListener(this);
-            //1. initialize array here
             int x = 0;
             for (int row = 0; row < grid.length; row++) {
                 for (int col = 0; col < grid[0].length; col++) {
@@ -58,7 +55,6 @@ public class DrawGrid {
             startX = 0;
             startY = 0;
 
-            //2) draw grid here
             for (int row = 0; row < grid.length; row++) {
                 for (int col = 0; col < grid[0].length; col++) {
                   g2.setColor(grid[row][col]);
@@ -74,7 +70,8 @@ public class DrawGrid {
             g2.setColor(new Color(255, 255, 255));
             if(turn%2==0) {
                 g2.drawString("Red's Turn",400,20);
-            }else {
+            }
+            else {
             	g2.drawString("Yellow's Turn", 400, 20);
             }
           
@@ -85,33 +82,19 @@ public class DrawGrid {
 
             int x = e.getX();
             int y = e.getY();
-            int xSpot = x/cellWidth;
-            int ySpot = y/cellWidth;
+            int xLocation = x/cellWidth;
+            int yLocation = y/cellWidth;
             
             if(turn%2==0) {
-            	grid[ySpot][xSpot] = new Color(255, 0, 0);
-            }else {
-            	grid[ySpot][xSpot] = new Color(255, 255, 0);
+            	grid[yLocation][xLocation] = new Color(255, 0, 0);
+            }
+            else {
+            	grid[yLocation][xLocation] = new Color(255, 255, 0);
             }
             System.out.println(x + " " + xSpot + " " + y + " " + ySpot);
             turn++;
             repaint();
         }
 
-        public void ActionReleased(ActionEvent e) {
-
-        }
-
-        public void ActionEntered(ActionEvent e) {
-
-        }
-
-        public void ActionExited(ActionEvent e) {
-
-        }
-
-        public void ActionClicked(ActionEvent e) {
-
-        }
     }
 }
